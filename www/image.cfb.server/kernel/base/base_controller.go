@@ -13,6 +13,9 @@ type BaseController struct {
 
 }
 
+/**
+	响应
+ */
 func response(context *gin.Context,responseCode int, responseData map[string]interface{}, headers map[string]string)  {
 	apiResponseStructure := &component.ApiResponseStructure{
 		Code: responseCode,

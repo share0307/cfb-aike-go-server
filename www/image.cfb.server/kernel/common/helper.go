@@ -11,6 +11,9 @@ type Helper struct {
 
 }
 
+/**
+	快速生成md5值
+ */
 func (helper *Helper)Md5(str string) string{
 	data := []byte(str)
 	has := md5.Sum(data)
