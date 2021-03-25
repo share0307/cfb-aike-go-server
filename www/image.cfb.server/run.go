@@ -7,7 +7,7 @@ import "image-cfb-server/command"
  */
 func main()  {
 
-	// 初始化环境配置
+	// 初始化环境配置，可以不在此处初始化，放到相关的init方法里
 
 
 
