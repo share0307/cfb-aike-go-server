@@ -13,6 +13,7 @@ func main()  {
 
 
 	// 执行命令
+	command.Initialize();
 	command.Execute();
 
 }

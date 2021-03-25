@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +29,14 @@ func Execute() {
 	导出子命令
  */
 func ExportCommands() []*cobra.Command {
-	var cmds []*cobra.Command
+	var cmds []*cobra.Command = []*cobra.Command {
+		&cobra.Command{
+			Use		:		"test",
+			Run	: 		func(cmd *cobra.Command, args []string) {
+				fmt.Println("hello world!")
+			},
+		},
+	}
 
 	return cmds;
 }
