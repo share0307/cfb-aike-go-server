@@ -1,0 +1,6 @@
+[base]
+IsDebug=false
+
+[gin]
+Port=8081
+IsDebug=true

@@ -1,8 +1,10 @@
 package helper
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // 获取根目录
@@ -30,11 +32,43 @@ func getRootPath()  string {
 		}
 	}
 
-	if _,err := os.Stat(rootPath); err != nil{
-		if os.IsNotExist(err) {
-			panic("项目根目录不存在："+ err.Error())
-		}
+	if exists,err := CheckFileExists(rootPath); !exists {
+		panic("项目根目录不存在："+ err.Error())
 	}
 
 	return rootPath
+}
+
+/**
+	获取相对根目录的目录
+ */
+func GetRelativePath(relativePath string)  (string, error) {
+	// 去掉两边空格
+	relativePath = strings.TrimSpace(relativePath)
+	// 统一分隔符
+	relativePath = strings.ReplaceAll(relativePath, "\\", "/")
+	// 去掉左右两边的 /
+	relativePath = strings.Trim(relativePath, "/")
+
+	// 组装相对路径
+	var absPath string = fmt.Sprintf("%s/%s", RootPath, relativePath)
+
+	if  exists,err := CheckFileExists(absPath) ;!exists {
+		return "", err
+	}
+
+	return absPath, nil
+}
+
+/**
+	获取相对根目录的目录，当文件不存在时，直接触发 panic
+ */
+func GetRelativePathWithPanic(relativePath string)  string {
+	absPath, err := GetRelativePath(relativePath)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return absPath
 }

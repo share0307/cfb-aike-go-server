@@ -11,6 +11,7 @@ var WebServerCmd = &cobra.Command{
 	Long: `提供图片web http server，提供下载/显示等功能`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+
 		// 启动服务
 		image.On()
 	},
