@@ -41,13 +41,13 @@ func newLoggerConfig() *loggerConfig {
 			},
 			// 文件配置
 			File	:	&go_logger.FileConfig{
-				Filename: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "im.log"),
+				Filename: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "app.log"),
 				LevelFileName: map[int]string{
-					go_logger.LOGGER_LEVEL_DEBUG	: fmt.Sprintf("%s/%s", helper.GetLogPath(), "im-debug.log"),
-					go_logger.LOGGER_LEVEL_NOTICE	: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "im-notice.log"),
-					go_logger.LOGGER_LEVEL_INFO		: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "im-info.log"),
-					go_logger.LOGGER_LEVEL_WARNING	: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "im-warning.log"),
-					go_logger.LOGGER_LEVEL_ERROR	: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "im-error.log"),
+					go_logger.LOGGER_LEVEL_DEBUG	: fmt.Sprintf("%s/%s", helper.GetLogPath(), "app-debug.log"),
+					go_logger.LOGGER_LEVEL_NOTICE	: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "app-notice.log"),
+					go_logger.LOGGER_LEVEL_INFO		: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "app-info.log"),
+					go_logger.LOGGER_LEVEL_WARNING	: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "app-warning.log"),
+					go_logger.LOGGER_LEVEL_ERROR	: fmt.Sprintf("%s/%s/", helper.GetLogPath(), "app-error.log"),
 				},
 				JsonFormat: true,
 				DateSlice: "d",
