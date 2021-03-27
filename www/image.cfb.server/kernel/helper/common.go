@@ -51,3 +51,10 @@ func GetStoragePath()  string {
 func GetLogPath() string {
 	return GetRelativePathWithPanic("storage/log/")
 }
+
+/**
+	获取资源路径
+ */
+func GetResourcePath() string {
+	return GetRelativePathWithPanic("resource/")
+}

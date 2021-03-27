@@ -26,7 +26,7 @@ type loggerConfig struct {
 func newLoggerConfig() *loggerConfig {
 
 	return &loggerConfig{
-		Target	:	vp.GetString("log.target"),
+		//Target	:	vp.GetString("logger.Target"),
 		Setting	:	struct {	// 匿名结构体
 			// 重置台配置
 			Console *go_logger.ConsoleConfig

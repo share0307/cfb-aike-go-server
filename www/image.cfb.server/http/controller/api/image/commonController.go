@@ -1,8 +1,12 @@
 package image
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"image-cfb-server/kernel/base"
+	"image-cfb-server/kernel/helper"
+	"image-cfb-server/provider"
+	"net/http"
 )
 
 var CommonController = new(commonController)
@@ -13,8 +17,21 @@ type commonController struct {
 }
 
 /**
-	首页
+	首页，用于上传
  */
 func (c *commonController)Index(context *gin.Context)  {
-	context.Writer.WriteString("hello world!")
+	context.HTML(http.StatusOK, "upload.tmpl", nil)
+}
+
+/**
+	接收文件上传
+ */
+func (c *commonController)Upload(context *gin.Context)  {
+	file,err := context.FormFile("imgfile")
+
+	if err != nil {
+		provider.LoggerProvider.Error("获取上传文件失败！！")
+	}
+
+	fmt.Println(context.SaveUploadedFile(file, fmt.Sprintf("%s/%s",helper.GetLogPath(), "aaa.jpeg")))
 }

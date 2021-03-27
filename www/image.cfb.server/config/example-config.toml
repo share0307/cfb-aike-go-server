@@ -5,3 +5,8 @@ IsDebug=false
 Addr="0.0.0.0:8081"
 IsDebug=true
 Mode="release"
+
+[logger]
+# 参考 go-logger
+Target="console"
+

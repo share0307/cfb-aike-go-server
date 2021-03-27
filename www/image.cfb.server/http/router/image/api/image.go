@@ -11,4 +11,6 @@ import (
 func SetApiImageRouter(group *gin.RouterGroup)  {
 	// 图片上传页面
 	group.GET("/images/index",  image.CommonController.Index)
+	// 接收文件上传
+	group.POST("/images/upload",  image.CommonController.Upload)
 }
