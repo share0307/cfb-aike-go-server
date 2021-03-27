@@ -37,3 +37,17 @@ func CheckFileExists(filePath string) (bool,error)  {
 
 	return true, nil
 }
+
+/**
+	获取 storage 目录，相对根目录而言
+ */
+func GetStoragePath()  string {
+	return GetRelativePathWithPanic("storage")
+}
+
+/**
+	获取日志目录
+ */
+func GetLogPath() string {
+	return GetRelativePathWithPanic("storage/log/")
+}
