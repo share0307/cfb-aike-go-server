@@ -2,5 +2,6 @@
 IsDebug=false
 
 [gin]
-Port=8081
+Addr="0.0.0.0:8081"
 IsDebug=true
+Mode="release"
