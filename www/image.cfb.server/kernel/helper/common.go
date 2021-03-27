@@ -1,4 +1,4 @@
-package common
+package helper
 
 import (
 	"crypto/md5"
@@ -21,3 +21,4 @@ func (helper *Helper)Md5(str string) string{
 
 	return md5str
 }
+
