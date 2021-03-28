@@ -71,7 +71,7 @@ func initConfig()  {
 	Conf = &Config{
 		Base		:		newBaseConfig(),
 		Gin			:		newGinConfig(),
-		Logger	:		newLoggerConfig(),
+		Logger		:		newLoggerConfig(),
 	}
 
 	mapConfigFromToml(Conf)
