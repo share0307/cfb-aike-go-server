@@ -11,14 +11,14 @@ import (
 	系统配置结构体
  */
 type Config struct {
-	// ***************** 可以进行 ttoml 配置的 *************/
+	// ***************** 可以进行 toml 配置的 *************/
 	// 基础配置
 	Base		*baseConfig	`mapstructure:"base"`
 	// gin框架相关配置
 	Gin			*ginConfig	`mapstructure:"gin"`
 
 
-	// ***************** 不需要进行 ttoml 配置的 *************/
+	// ***************** 不需要进行 toml 配置的 *************/
 	Logger	*loggerConfig
 }
 
