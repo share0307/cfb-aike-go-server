@@ -15,7 +15,7 @@ type Config struct {
 	// 基础配置
 	Base		*baseConfig	`mapstructure:"base"`
 	// gin框架相关配置
-	Gin			*ginConfig		`mapstructure:"gin"`
+	Gin			*ginConfig	`mapstructure:"gin"`
 
 
 	// ***************** 不需要进行 ttoml 配置的 *************/
