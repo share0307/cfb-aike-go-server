@@ -6,5 +6,3 @@ package base
 type BaseBusiness struct {
 
 }
-
-

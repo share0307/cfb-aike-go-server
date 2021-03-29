@@ -91,6 +91,9 @@ func initConfig() {
 	}
 }
 
+/**
+	初始化子命令
+ */
 func initCommand()  {
 	RootCmd.AddCommand(image.WebServerCmd)
 }
