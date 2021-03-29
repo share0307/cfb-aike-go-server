@@ -19,7 +19,7 @@ type Config struct {
 
 
 	// ***************** 不需要进行 toml 配置的 *************/
-	Logger	*loggerConfig
+	Logger		*loggerConfig
 }
 
 var (
