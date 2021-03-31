@@ -1,7 +1,7 @@
 package base
 
 /**
-	模型积累
+	模型基类
  */
 type BaseModel struct {
 

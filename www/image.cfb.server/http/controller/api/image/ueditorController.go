@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"image-cfb-server/kernel/base"
+	"image-cfb-server/module/image/constant"
 )
 
 var UEditorController = new(uEditorController)
@@ -14,20 +15,22 @@ type uEditorController struct {
 }
 
 /**
-	调用上传接口
+	通过 action 进行业务调用
  */
 func (c *uEditorController)Index(context *gin.Context)  {
-	c.Upload(context)
-}
-
-/**
-	接收文件上传
- */
-func (c *uEditorController)Upload(context *gin.Context)  {
 	// 通过 action 判断业务
 	action := context.Query("action")
 
 	fmt.Println("当前 action：", action)
+
+	switch action {
+		case constant.UEditorAction_Config:
+
+		case constant.UEditorAction_UploadImage:
+
+	default:
+
+	}
 
 	// 当 action == config 时，返回配置信息
 
