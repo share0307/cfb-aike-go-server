@@ -13,6 +13,7 @@ func main() {
 	initApp()
 
 	// todo：初始化服务提供者，不需要放这里，将换成被动加载
+	// todo：初始化必要的服务提供者，如日志类
 	initProvider()
 
 	// 执行命令

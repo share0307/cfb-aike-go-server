@@ -20,7 +20,7 @@ func On()  {
 	// 加载html模板
 	router.LoadHTMLGlob(fmt.Sprintf("%s/%s/*/*", helper.GetResourcePath(), "tmpl"))
 
-	// api 分组陆游
+	// api 分组路由
 	apiGroup := router.Group("/api")
 	// 设置图片分组路由
 	api.SetApiImageRouter(apiGroup)
