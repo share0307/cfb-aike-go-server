@@ -30,7 +30,7 @@ func initApp() {
 }
 
 /**
-初始化配置
+	初始化配置
 */
 func initProvider() {
 	// 初始化日志服务提供者
