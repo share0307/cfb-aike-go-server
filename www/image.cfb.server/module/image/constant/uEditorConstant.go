@@ -12,7 +12,7 @@ var UEditorActionConstant = new(uEditorActionConstant)
  */
 const (
 	// 获取配置
-	UEditorAction_Config			= "config"
+	UEditorAction_Config		= "config"
 	// 上传图片
 	UEditorAction_UploadImage	= "uploadimage"
 	// 涂鸦上传
@@ -20,7 +20,7 @@ const (
 	// 上传视频
 	UEditorAction_UploadVideo	= "uploadvideo"
 	// 上传文件
-	UEditorAction_UploadFile		= "uploadfile"
+	UEditorAction_UploadFile	= "uploadfile"
 )
 
 /**
