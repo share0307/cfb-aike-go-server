@@ -6,8 +6,6 @@ package config
 type baseConfig struct {
 	// 是否调试模式
 	IsDebug 		bool
-	// 时区
-	TimeZone		string
 }
 
 /**
