@@ -1,8 +1,8 @@
 package base;
 
 import (
+	"aike-cfb-server/kernel/component/common"
 	"github.com/gin-gonic/gin"
-	"aike-cfb-server/kernel/component"
 	"net/http"
 )
 
@@ -17,10 +17,10 @@ type BaseController struct {
 	响应
  */
 func response(context *gin.Context,responseCode int, responseData map[string]interface{}, headers map[string]string)  {
-	apiResponseStructure := &component.ApiResponseStructure{
+	apiResponseStructure := &common.ApiResponseStructure{
 		Code: responseCode,
 		Data:	responseData,
 	}
 
-	component.ApiResponseComponent.Response(context, apiResponseStructure, http.StatusOK, headers)
+	common.ApiResponseComponent.Response(context, apiResponseStructure, http.StatusOK, headers)
 }

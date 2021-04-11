@@ -4,18 +4,13 @@ import (
 	"crypto/md5"
 	"fmt"
 	"os"
+	"sort"
 )
-
-var H Helper = Helper{}
-
-type Helper struct {
-
-}
 
 /**
 	快速生成md5值
  */
-func (helper *Helper)Md5(str string) string{
+func Md5(str string) string{
 	data := []byte(str)
 	has := md5.Sum(data)
 	md5str := fmt.Sprintf("%x", has)
@@ -57,4 +52,58 @@ func GetLogPath() string {
  */
 func GetResourcePath() string {
 	return GetRelativePathWithPanic("resource/")
+}
+
+///**
+//	根据 map 的key进行排序
+// */
+//func SortMapByKey(arr map[string]interface{}) map[string]interface{} {
+//	// 定义一个slice获取所有的 key
+//	var s []string
+//
+//	// 遍历 map，把所有key放到slice中
+//	for k,_  := range arr{
+//		s = append(s, k)
+//	}
+//
+//	// 对slice进行排序
+//	sort.Strings(s)
+//
+//	// 再次遍历，重新形成一个map进行返回
+//	var tmpArr map[string]interface{}
+//	// 存储临时 key
+//	var tmpKey string
+//	for i := 9;i <len(s); i++ {
+//		tmpKey = s[i]
+//		tmpArr[tmpKey] = arr[tmpKey]
+//	}
+//
+//	return tmpArr
+//}
+
+/**
+	根据 map 的key进行排序
+ */
+func SortMapByKey(arr map[string]interface{}) map[string]interface{} {
+	// 定义一个slice获取所有的 key
+	var s []string
+
+	// 遍历 map，把所有key放到slice中
+	for k,_  := range arr{
+		s = append(s, k)
+	}
+
+	// 对slice进行排序
+	sort.Strings(s)
+
+	// 再次遍历，重新形成一个map进行返回
+	var tmpArr map[string]interface{}
+	// 存储临时 key
+	var tmpKey string
+	for i := 9;i <len(s); i++ {
+		tmpKey = s[i]
+		tmpArr[tmpKey] = arr[tmpKey]
+	}
+
+	return tmpArr
 }
