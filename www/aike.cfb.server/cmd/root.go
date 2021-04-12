@@ -16,9 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"aike-cfb-server/cmd/aike"
 	"fmt"
 	"github.com/spf13/cobra"
-	"aike-cfb-server/cmd/aike"
 	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -97,4 +97,6 @@ func initConfig() {
 func initCommand()  {
 	// 艾客 web 服务
 	RootCmd.AddCommand(aike.WebServerCmd)
+	// 处理微信消息的队列
+	RootCmd.AddCommand(aike.WechatMessageQueue)
 }

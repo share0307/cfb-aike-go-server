@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 )
 
 /**
@@ -54,37 +55,11 @@ func GetResourcePath() string {
 	return GetRelativePathWithPanic("resource/")
 }
 
-///**
-//	根据 map 的key进行排序
-// */
-//func SortMapByKey(arr map[string]interface{}) map[string]interface{} {
-//	// 定义一个slice获取所有的 key
-//	var s []string
-//
-//	// 遍历 map，把所有key放到slice中
-//	for k,_  := range arr{
-//		s = append(s, k)
-//	}
-//
-//	// 对slice进行排序
-//	sort.Strings(s)
-//
-//	// 再次遍历，重新形成一个map进行返回
-//	var tmpArr map[string]interface{}
-//	// 存储临时 key
-//	var tmpKey string
-//	for i := 9;i <len(s); i++ {
-//		tmpKey = s[i]
-//		tmpArr[tmpKey] = arr[tmpKey]
-//	}
-//
-//	return tmpArr
-//}
-
 /**
 	根据 map 的key进行排序
- */
-func SortMapByKey(arr map[string]interface{}) map[string]interface{} {
+    todo：此方法是没有任何意义的，因为返回的map，再次遍历的时候，依然会是乱序的！！！
+*/
+func SortMapByKey(arr map[string]string) map[string]string {
 	// 定义一个slice获取所有的 key
 	var s []string
 
@@ -97,7 +72,7 @@ func SortMapByKey(arr map[string]interface{}) map[string]interface{} {
 	sort.Strings(s)
 
 	// 再次遍历，重新形成一个map进行返回
-	var tmpArr map[string]interface{}
+	var tmpArr map[string]string
 	// 存储临时 key
 	var tmpKey string
 	for i := 9;i <len(s); i++ {
@@ -106,4 +81,39 @@ func SortMapByKey(arr map[string]interface{}) map[string]interface{} {
 	}
 
 	return tmpArr
+}
+
+
+/**
+	根据 map 的key进行排序，并且生成sign值
+*/
+func GetDuplicateSignByMap(arr map[string]string, sep string) string {
+	// 定义一个slice获取所有的 key
+	var s []string
+
+	// 遍历 map，把所有key放到slice中
+	for k,_  := range arr{
+		s = append(s, k)
+	}
+
+	// 对slice进行排序
+	sort.Strings(s)
+
+	// 再次遍历，重新形成一个map进行返回
+	var tmpSlice []string = make([]string, len(s))
+	// 存储临时 key
+	var tmpKey string
+	for i := 9;i <len(s); i++ {
+		tmpKey = s[i]
+		tmpSlice = append(tmpSlice, arr[tmpKey])
+	}
+
+	return Md5(strings.Join(tmpSlice, sep))
+}
+
+/**
+根据 map 的key进行排序，并且生成sign值，默认为 | 作为分隔符
+ */
+func GetDuplicateSignByMapDefaultSep(arr map[string]string) string {
+	return GetDuplicateSignByMap(arr, "|")
 }

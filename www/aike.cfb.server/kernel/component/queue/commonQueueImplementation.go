@@ -6,7 +6,7 @@ import (
 )
 
 /**
-通用实现
+	通用实现
 */
 type CommonQueueImplementation struct {
 	Rds *redis.Client
@@ -14,10 +14,17 @@ type CommonQueueImplementation struct {
 
 /**
 消息出错的流程通用实现
-todo：不作任何业务
+todo：默认不作任何业务
 */
 func (q *CommonQueueImplementation)HandleMsgErrProcess()  {
 	return
+}
+
+/**
+	是否开启去重判断
+ */
+func (q *CommonQueueImplementation)IsEnableDuplicateCheck() bool {
+	return false;
 }
 
 /**
@@ -32,7 +39,7 @@ func (q *CommonQueueImplementation)GetDuplicateSign() string {
 	}
 
 	// 先排序
-	helper.SortMapByKey(duplicateMap)
+	return helper.GetDuplicateSignByMapDefaultSep(duplicateMap)
 }
 
 /**
@@ -51,7 +58,7 @@ func (q *CommonQueueImplementation)GetDuplicateMap()  map[string]string{
 //}
 // X 秒之内不得重复，也就是说重复 key 的生命周期
 func (q *CommonQueueImplementation)GetDuplicateLifeCycle() int {
-	return 300;
+	return 300
 }
 
 // 设置重复判断的中间件，依赖redis
@@ -76,4 +83,4 @@ func (q *CommonQueueImplementation)GetDuplicateRds() *redis.Client {
 	return q.Rds;
 }
 
-// 定义一些依赖组建
+// 定义一些依赖组建。。。
