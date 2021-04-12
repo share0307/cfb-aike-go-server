@@ -2,6 +2,7 @@ package queue
 
 import (
 	"aike-cfb-server/kernel/helper"
+	"fmt"
 	"github.com/go-redis/redis"
 )
 
@@ -27,12 +28,23 @@ func (q *CommonQueueImplementation)IsEnableDuplicateCheck() bool {
 	return false;
 }
 
+
+/**
+生成 sign 的规则
+todo：此处有个坑，哪怕在子类中覆盖重写的，因为接收者的不同，所以也不能算是覆盖，所以无法重写！！
+*/
+func (h *CommonQueueImplementation)GetDuplicateMap() map[string]string {
+	return map[string]string{}
+}
+
 /**
 	去重的规则
 	当map为空时，则生成去重规则将出错！！
  */
 func (q *CommonQueueImplementation)GetDuplicateSign() string {
 	duplicateMap := q.GetDuplicateMap()
+
+	fmt.Println(duplicateMap)
 
 	if len(duplicateMap) == 0 {
 		panic("请先设置完成 GetDuplicateMap() 的设置！！")
@@ -45,17 +57,13 @@ func (q *CommonQueueImplementation)GetDuplicateSign() string {
 /**
 	返回去重的组合
  */
-func (q *CommonQueueImplementation)GetDuplicateMap()  map[string]string{
-	return map[string]string{}
-}
+//func (q *CommonQueueImplementation)GetDuplicateMap()  map[string]string{
+//	return map[string]string{}
+//}
 
 /**
 	默认的去重规则，返回一个空的map，但map为空时，则生成去重规则将出错！！
  */
-
-//func (q *CommonQueueImplementation)GetDuplicateMap()  {
-//
-//}
 // X 秒之内不得重复，也就是说重复 key 的生命周期
 func (q *CommonQueueImplementation)GetDuplicateLifeCycle() int {
 	return 300

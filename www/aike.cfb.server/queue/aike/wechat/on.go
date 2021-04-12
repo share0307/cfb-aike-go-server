@@ -12,6 +12,7 @@ func On()  {
 		&message.HandleWechatMessage{},
 	}
 
+
 	// 启动goroutine
 	queue.Export(queues)
 }

@@ -18,6 +18,8 @@ type HandleWechatMessage struct {
 	启动服务
  */
 func (h *HandleWechatMessage)On(ctx context.Context)  {
+	fmt.Println("aaaaaaaaaaaa：")
+	fmt.Println(h.GetDuplicateSign())
 
 	fmt.Println("启动 HandleWechatMessage 服务")
 
@@ -78,7 +80,7 @@ func (h *HandleWechatMessage)HandleConnectionErrProcess() {
  */
 func (h *HandleWechatMessage)GetDuplicateMap() map[string]string {
 	return map[string]string{
-
+		"name"	:	"test",
 	}
 }
 
