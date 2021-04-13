@@ -11,6 +11,6 @@ var WechatMessageQueue = &cobra.Command{
 	Long: `处理微信消息队列`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// 启动服务，启动 web server 服务
-		wechat.On()
+		wechat.Run()
 	},
 }

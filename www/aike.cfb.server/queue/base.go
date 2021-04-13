@@ -3,6 +3,9 @@ package queue
 import (
 	"aike-cfb-server/kernel/component/queue"
 	"context"
+	"fmt"
+	"os"
+	"os/signal"
 )
 
 /**
@@ -12,7 +15,11 @@ type ExportQueueInterface interface {
 	// 此接口，也必须要实现这些
 	queue.QueueInterface
 
+	// 启动服务
 	On(ctx context.Context)
+
+	// 关闭服务时，做一些清理的工作
+	// 说明：此方法更多是侧重作一些资源清理的事情，而On中的context更多是为了关联goroutine上下文
 	Down()
 }
 
@@ -31,10 +38,17 @@ func Export(queues []ExportQueueInterface)  {
 		go queue.On(ctx)
 	}
 
-	//time.AfterFunc(3 * time.Second, func() {
-	//	cancel()
-	//})
-
 	// 常驻进程
-	select {}
+	//select {}
+
+	// 监听信号
+	c := make(chan os.Signal)
+	// 监听所有信号！
+	signal.Notify(c)
+	//监听指定信号
+	//signal.Notify(c, syscall.SIGHUP, syscall.SIGUSR2,syscall.SIGINT)
+
+	//阻塞直至有信号传入
+	s := <-c
+	fmt.Println("捕获到信号：", s)
 }

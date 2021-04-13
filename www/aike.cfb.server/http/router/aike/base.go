@@ -1,17 +1,17 @@
 package aike
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
 	"aike-cfb-server/config"
 	"aike-cfb-server/http/router/aike/api"
 	"aike-cfb-server/kernel/helper"
+	"fmt"
+	"github.com/gin-gonic/gin"
 )
 
 /**
 	启动服务
  */
-func On()  {
+func Run()  {
 	// 设置运行模式
 	gin.SetMode(config.Conf.Gin.Mode)
 

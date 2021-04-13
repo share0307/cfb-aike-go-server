@@ -34,7 +34,9 @@ func (q *CommonQueueImplementation)IsEnableDuplicateCheck() bool {
 todo：此处有个坑，哪怕在子类中覆盖重写的，因为接收者的不同，所以也不能算是覆盖，所以无法重写！！
 */
 func (h *CommonQueueImplementation)GetDuplicateMap() map[string]string {
-	return map[string]string{}
+	return map[string]string{
+		"name":"100",
+	}
 }
 
 /**

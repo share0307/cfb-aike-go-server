@@ -18,20 +18,15 @@ type HandleWechatMessage struct {
 	启动服务
  */
 func (h *HandleWechatMessage)On(ctx context.Context)  {
-	fmt.Println("aaaaaaaaaaaa：")
 	fmt.Println(h.GetDuplicateSign())
 
 	fmt.Println("启动 HandleWechatMessage 服务")
 
-	go func() {
-		select {
-			case <- ctx.Done():
-				fmt.Println("关闭了！！", ctx.Err())
-				h.Down()
-		}
-	}()
-
-	fmt.Println("关闭 HandleWechatMessage 服务")
+	select {
+		case <- ctx.Done():
+			fmt.Println("关闭了！！", ctx.Err())
+			h.Down()
+	}
 }
 
 /**
