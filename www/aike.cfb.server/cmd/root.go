@@ -98,5 +98,5 @@ func initCommand()  {
 	// 艾客 web 服务
 	RootCmd.AddCommand(aike.WebServerCmd)
 	// 处理微信消息的队列
-	RootCmd.AddCommand(aike.WechatMessageQueue)
+	RootCmd.AddCommand(aike.WechatQueueCmd)
 }

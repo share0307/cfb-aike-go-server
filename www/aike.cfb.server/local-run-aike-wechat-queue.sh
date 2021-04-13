@@ -3,4 +3,4 @@
 # 设置当前路径
 export CFB_ROOT_PATH=$(pwd)
 
-go run main.go  aike/wechatMessageQueue
+go run main.go  aike/wechatQueue

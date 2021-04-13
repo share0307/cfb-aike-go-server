@@ -5,8 +5,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var WechatMessageQueue = &cobra.Command{
-	Use:   "aike/wechatMessageQueue",
+var WechatQueueCmd = &cobra.Command{
+	Use:   "aike/wechatQueue",
 	Short: "消费艾克的微信数据",
 	Long: `处理微信消息队列`,
 	Run: func(cmd *cobra.Command, args []string) {

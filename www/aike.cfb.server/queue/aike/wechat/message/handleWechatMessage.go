@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis"
+	"sync"
 )
 
 /**
@@ -17,7 +18,7 @@ type HandleWechatMessage struct {
 /**
 	启动服务
  */
-func (h *HandleWechatMessage)On(ctx context.Context)  {
+func (h *HandleWechatMessage)On(ctx context.Context, group *sync.WaitGroup)  {
 	fmt.Println(h.GetDuplicateSign())
 
 	fmt.Println("启动 HandleWechatMessage 服务")
@@ -26,6 +27,8 @@ func (h *HandleWechatMessage)On(ctx context.Context)  {
 		case <- ctx.Done():
 			fmt.Println("关闭了！！", ctx.Err())
 			h.Down()
+			// 完成分组任务
+			group.Done()
 	}
 }
 
