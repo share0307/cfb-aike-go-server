@@ -11,10 +11,10 @@ type QueueInterface interface {
 	// 队列相关消息
 	// 做一些初始化工作
 	Init()
-	// 设置队列名称
-	SetQueueName(name string)
-	// 获取队列名称，用于生成消息版本号，防止污染的问题
-	GetQueueName() string
+	// 设置交换机
+	SetQueueExchange(queueExchange QueueExchange)
+
+	// 业务流程处理
 	// 处理消息的流程，从队列中获取消息，会推送到此方法中
 	HandleReceiveMsgProcess()
 	// 发送消息的流程，会从此方法中取得数据，然后推送队列中
@@ -50,3 +50,20 @@ type QueueInterface interface {
 	////获取日志组件，用于内部写日志
 	//GetLogger() *go_logger.Logger
 }
+
+/**
+	定义交换机类型，
+ */
+type QueueExchange struct {
+	// 交换机类型
+	ExchangeType string
+	// 交换机名称
+	ExchangeName string
+	// 队列名称
+	QueueName string
+	// 路由key名称
+	RouteKeyName string
+	// 链接地址
+	Dns string
+}
+

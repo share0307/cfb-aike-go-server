@@ -47,14 +47,11 @@ func (h *HandleWechatMessage)Down() {
 // 队列相关消息
 // 做一些初始化工作
 func (h *HandleWechatMessage)Init() {
-	// 初始化队列链接
+	// 初始化一些配置
 
-	h.SetDuplicateMap(map[string]string{"name" : "kkk"})
-	fmt.Println(h.GetDuplicateMap())
-	fmt.Println(h.GetDuplicateSign())
-	fmt.Println("--------")
-	h.SetEnableDuplicateCheckFlag(false)
-	fmt.Println(h.IsEnableDuplicateCheck())
+	// 初始化一些通用组件
+
+	// 初始化rabbitmq链接
 }
 
 // 处理消息的流程，从队列中获取消息，会推送到此方法中

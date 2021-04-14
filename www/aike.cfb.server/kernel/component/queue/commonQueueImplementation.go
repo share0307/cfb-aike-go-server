@@ -20,6 +20,8 @@ type CommonQueueImplementation struct {
 	rds *redis.Client
 	// x 秒之内的任务不得重复
 	duplicateLifeCycle int
+
+	HandleReceiveMsgProcess func()
 }
 
 /**
@@ -76,7 +78,7 @@ func (c *CommonQueueImplementation)GetDuplicateSign() string {
 	fmt.Println(DuplicateMap)
 
 	if len(DuplicateMap) == 0 {
-		panic("请先设置完成 GetDuplicateMap() 的设置！！")
+		panic("请先设置完成 duplicateMap 的设置！！")
 	}
 
 	return helper.GetDuplicateSignByMapDefaultSep(DuplicateMap)
@@ -127,4 +129,4 @@ func (c *CommonQueueImplementation)GetRds() *redis.Client {
 	return c.rds
 }
 
-// 定义一些依赖组建。。。
+// 定义一些通用依赖组建。。。
