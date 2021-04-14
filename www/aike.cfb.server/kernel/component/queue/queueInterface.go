@@ -11,6 +11,8 @@ type QueueInterface interface {
 	// 队列相关消息
 	// 做一些初始化工作
 	Init()
+	// 设置队列名称
+	SetQueueName(name string)
 	// 获取队列名称，用于生成消息版本号，防止污染的问题
 	GetQueueName() string
 	// 处理消息的流程，从队列中获取消息，会推送到此方法中
@@ -23,18 +25,24 @@ type QueueInterface interface {
 	HandleConnectionErrProcess()
 
 	// 消息去重规则
+	// 设置是否开启去重
+	SetEnableDuplicateCheckFlag(flag bool)
 	// 是否启用去重
 	IsEnableDuplicateCheck() bool
 	// 去重的规则
 	GetDuplicateSign() string
-	//生成 sign 的规则
+	// 获取 sign 的规则
 	GetDuplicateMap() map[string]string
+	// 获取 sign 的规则
+	SetDuplicateMap(duplicateMap map[string]string)
+	// X 秒之内不得重复，也就是说重复 key 的生命周期，单位为秒
+	SetDuplicateLifeCycle(second int)
 	// X 秒之内不得重复，也就是说重复 key 的生命周期
 	GetDuplicateLifeCycle() int
 	// 设置重复判断的中间件，依赖redis
-	SetDuplicateRds(rds *redis.Client)
+	SetRds(rds *redis.Client)
 	// 获取重复判断的中间件，依赖redis
-	GetDuplicateRds() *redis.Client
+	GetRds() *redis.Client
 
 	// 定义一些依赖组建
 	// 日志组件，用全局的就好，初始化时必须会初始化全局的日志组件

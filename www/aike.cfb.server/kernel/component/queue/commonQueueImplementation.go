@@ -10,87 +10,121 @@ import (
 	通用实现
 */
 type CommonQueueImplementation struct {
-	Rds *redis.Client
+	// 队列名称
+	queueName string
+	// 是否开启去重标记
+	isDuplicateCheckFlag bool
+	// 重复检测的map
+	duplicateMap	map[string]string
+	// redis组建
+	rds *redis.Client
+	// x 秒之内的任务不得重复
+	duplicateLifeCycle int
 }
 
 /**
-消息出错的流程通用实现
-todo：默认不作任何业务
+	设置队列名称
+ */
+func (c *CommonQueueImplementation)SetQueueName(name string)  {
+	c.queueName = name
+}
+
+/**
+	获取队列名称
+ */
+func (c *CommonQueueImplementation)GetQueueName() string {
+	return c.queueName
+}
+
+
+/**
+是否开启去重判断
 */
-func (q *CommonQueueImplementation)HandleMsgErrProcess()  {
-	return
+func (c *CommonQueueImplementation)SetEnableDuplicateCheckFlag(flag bool) {
+	c.isDuplicateCheckFlag = flag
 }
 
 /**
 	是否开启去重判断
  */
-func (q *CommonQueueImplementation)IsEnableDuplicateCheck() bool {
-	return false;
+func (c *CommonQueueImplementation)IsEnableDuplicateCheck() bool {
+	return c.isDuplicateCheckFlag
 }
 
+/**
+	设置去重map
+ */
+func (c *CommonQueueImplementation)SetDuplicateMap(duplicateMap map[string]string) {
+	c.duplicateMap = duplicateMap
+}
 
 /**
-生成 sign 的规则
-todo：此处有个坑，哪怕在子类中覆盖重写的，因为接收者的不同，所以也不能算是覆盖，所以无法重写！！
+	生成 sign 的规则
+	todo：此处有个坑，哪怕在子类中覆盖重写的，因为接收者的不同，所以也不能算是覆盖，所以无法重写！！
 */
-func (h *CommonQueueImplementation)GetDuplicateMap() map[string]string {
-	return map[string]string{
-		"name":"100",
-	}
+func (c *CommonQueueImplementation)GetDuplicateMap() map[string]string {
+	return c.duplicateMap
 }
 
 /**
 	去重的规则
 	当map为空时，则生成去重规则将出错！！
  */
-func (q *CommonQueueImplementation)GetDuplicateSign() string {
-	duplicateMap := q.GetDuplicateMap()
+func (c *CommonQueueImplementation)GetDuplicateSign() string {
+	DuplicateMap := c.GetDuplicateMap()
 
-	fmt.Println(duplicateMap)
+	fmt.Println(DuplicateMap)
 
-	if len(duplicateMap) == 0 {
+	if len(DuplicateMap) == 0 {
 		panic("请先设置完成 GetDuplicateMap() 的设置！！")
 	}
 
-	// 先排序
-	return helper.GetDuplicateSignByMapDefaultSep(duplicateMap)
+	return helper.GetDuplicateSignByMapDefaultSep(DuplicateMap)
 }
 
 /**
-	返回去重的组合
+	设置 x 秒之内，任务不得重复
  */
-//func (q *CommonQueueImplementation)GetDuplicateMap()  map[string]string{
-//	return map[string]string{}
-//}
+func (c *CommonQueueImplementation)SetDuplicateLifeCycle(second int) {
+	c.duplicateLifeCycle = second
+}
+/**
+	设置 x 秒之内，任务不得重复，设置默认值
+ */
+func (c *CommonQueueImplementation)SetDuplicateLifeCycleDefault() {
+	c.SetDuplicateLifeCycle(300)
+}
 
 /**
 	默认的去重规则，返回一个空的map，但map为空时，则生成去重规则将出错！！
+	X 秒之内不得重复，也就是说重复 key 的生命周期
  */
-// X 秒之内不得重复，也就是说重复 key 的生命周期
-func (q *CommonQueueImplementation)GetDuplicateLifeCycle() int {
-	return 300
+func (c *CommonQueueImplementation)GetDuplicateLifeCycle() int {
+	return c.duplicateLifeCycle
 }
-
-// 设置重复判断的中间件，依赖redis
-//func (q *CommonQueueImplementation)SetDuplicateRds(rds *redis.Client) {
-//
-//}
 
 /**
 	设置默认的redis链接
  */
-func (q *CommonQueueImplementation)SetDefaultDuplicateRds() {
-	//q.Rds =
+func (c *CommonQueueImplementation)SetDefaultRds() {
+	//c.SetRds()
+}
+
+/**
+	设置默认的redis链接
+ */
+func (c *CommonQueueImplementation)SetRds(rds *redis.Client) {
+	c.rds = rds
 }
 
 // 获取重复判断的中间件，依赖redis
-func (q *CommonQueueImplementation)GetDuplicateRds() *redis.Client {
-	// 当 Rds 为 nil 时，则设置默认的redis链接，并且返回
-	if q.Rds == nil {
-		q.SetDefaultDuplicateRds()
+func (c *CommonQueueImplementation)GetRds() *redis.Client {
+	// 当 rds 为 nil 时，则设置默认的redis链接，并且返回
+	if c.rds == nil {
+		c.SetDefaultRds()
 	}
 
-	return q.Rds;
+	return c.rds
 }
 
 // 定义一些依赖组建。。。

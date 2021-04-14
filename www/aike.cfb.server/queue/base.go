@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"sync"
+	"syscall"
 )
 
 /**
@@ -49,9 +50,9 @@ func Export(queues []ExportQueueInterface)  {
 	// 监听信号
 	c := make(chan os.Signal)
 	// 监听所有信号！
-	signal.Notify(c)
+	//signal.Notify(c)
 	//监听指定信号
-	//signal.Notify(c, syscall.SIGHUP, syscall.SIGUSR2,syscall.SIGINT)
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGUSR2,syscall.SIGINT)
 
 	//阻塞直至有信号传入
 	s := <-c

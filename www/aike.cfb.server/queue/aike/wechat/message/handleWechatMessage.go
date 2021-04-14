@@ -2,10 +2,11 @@ package message
 
 import (
 	"aike-cfb-server/kernel/component/queue"
+	"aike-cfb-server/provider"
 	"context"
 	"fmt"
-	"github.com/go-redis/redis"
 	"sync"
+	"time"
 )
 
 /**
@@ -19,13 +20,16 @@ type HandleWechatMessage struct {
 	启动服务
  */
 func (h *HandleWechatMessage)On(ctx context.Context, group *sync.WaitGroup)  {
-	fmt.Println(h.GetDuplicateSign())
+	provider.LoggerProvider.Info("正在启用 HandleWechatMessage 的队列服务！")
 
-	fmt.Println("启动 HandleWechatMessage 服务")
+	// 初始化服务
+	provider.LoggerProvider.Debugf("准备初始化服务：", time.Now().String())
+	h.Init()
+	provider.LoggerProvider.Debugf("完成初始化服务：", time.Now().String())
 
+	// 进行监听 context
 	select {
 		case <- ctx.Done():
-			fmt.Println("关闭了！！", ctx.Err())
 			h.Down()
 			// 完成分组任务
 			group.Done()
@@ -35,22 +39,22 @@ func (h *HandleWechatMessage)On(ctx context.Context, group *sync.WaitGroup)  {
 /**
 	关闭服务
  */
-func (h *HandleWechatMessage)Down()  {
+
+func (h *HandleWechatMessage)Down() {
 	fmt.Println("HandleWechatMessage 关闭了！！")
 }
 
 // 队列相关消息
 // 做一些初始化工作
 func (h *HandleWechatMessage)Init() {
+	// 初始化队列链接
 
-}
-
-/**
-获取队列名称，用于生成消息版本号，防止污染的问题
- */
-func (h *HandleWechatMessage)GetQueueName() string {
-
-	return ""
+	h.SetDuplicateMap(map[string]string{"name" : "kkk"})
+	fmt.Println(h.GetDuplicateMap())
+	fmt.Println(h.GetDuplicateSign())
+	fmt.Println("--------")
+	h.SetEnableDuplicateCheckFlag(false)
+	fmt.Println(h.IsEnableDuplicateCheck())
 }
 
 // 处理消息的流程，从队列中获取消息，会推送到此方法中
@@ -63,25 +67,15 @@ func (h *HandleWechatMessage)HandlePublishMsgProcess() {
 
 }
 
-// 出现异常时的流程
-func (h *HandleWechatMessage)HandleMsgErrProcess() {
-
-}
-
 // 处理链接异常的流程
 func (h *HandleWechatMessage)HandleConnectionErrProcess() {
 
 }
 
 /**
-	生成 sign 的规则
- */
-func (h *HandleWechatMessage)GetDuplicateMap() map[string]string {
-	return map[string]string{
-		"name"	:	"test",
-	}
-}
-
-func (h *HandleWechatMessage) SetDuplicateRds(rds *redis.Client) {
-	panic("implement me")
+消息出错的流程通用实现
+todo：默认不作任何业务
+*/
+func (h *HandleWechatMessage)HandleMsgErrProcess() {
+	return
 }
