@@ -26,9 +26,20 @@ type ExportQueueInterface interface {
 }
 
 /**
+	队列分组，并且用于初始化队列
+ */
+type QueueGroup struct {
+	queueList []ExportQueueInterface
+}
+
+func (qg *QueueGroup)setQueue(queue *ExportQueueInterface) {
+	append(qg.queueList, queue)
+}
+
+/**
 	导出业务
  */
-func Export(queues []ExportQueueInterface)  {
+func Consume(queues []ExportQueueInterface)  {
 	// 生成context
 	ctx, cancel := context.WithCancel(context.Background())
 	// 取消，必须注意：肯定会调用此 defer，但是协程是否来得及处理，这个必须得靠手工保证！！
