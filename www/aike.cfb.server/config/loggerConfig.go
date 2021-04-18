@@ -1,9 +1,9 @@
 package config
 
 import (
+	"aike-cfb-server/kernel/helper"
 	"fmt"
 	go_logger "github.com/phachon/go-logger"
-	"aike-cfb-server/kernel/helper"
 )
 
 type loggerConfig struct {
@@ -23,9 +23,8 @@ type loggerConfig struct {
 /**
 映射、初始化日志配置
 */
-func newLoggerConfig() *loggerConfig {
-
-	return &loggerConfig{
+func newLoggerConfig() loggerConfig {
+	return loggerConfig{
 		//Target	:	vp.GetString("logger.Target"),
 		Setting	:	struct {	// 匿名结构体
 			// 重置台配置

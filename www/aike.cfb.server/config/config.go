@@ -1,30 +1,32 @@
 package config
 
 import (
+	"aike-cfb-server/kernel/helper"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"aike-cfb-server/kernel/helper"
 )
 
 /**
 	系统配置结构体
  */
-type Config struct {
+type config struct {
 	// ***************** 可以进行 toml 配置的 *************/
 	// 基础配置
-	Base		*baseConfig	`mapstructure:"base"`
+	Base		baseConfig	`mapstructure:"base"`
 	// gin框架相关配置
-	Gin			*ginConfig	`mapstructure:"gin"`
+	Gin			ginConfig	`mapstructure:"gin"`
+	// 多个rabbitmq配置
+	RabbitMqs map[string]RabbitmqConfig `mapstructure:"rabbitmq"`
 
 
 	// ***************** 不需要进行 toml 配置的 *************/
-	Logger		*loggerConfig
+	Logger		loggerConfig
 }
 
 var (
 	// 配置全局单例
-	Conf *Config
+	Conf *config
 	// 获取配置目录
 	configPath string = helper.GetRelativePathWithPanic("config")
 	// vp
@@ -68,10 +70,11 @@ func initViper()  {
 	初始化配置，基于viper，toml的配置项，大于初始化时的默认配置
  */
 func initConfig()  {
-	Conf = &Config{
-		Base		:		newBaseConfig(),
-		Gin			:		newGinConfig(),
-		Logger		:		newLoggerConfig(),
+	Conf = &config{
+		Base					:		newBaseConfig(),
+		Gin						:		newGinConfig(),
+		Logger				:		newLoggerConfig(),
+		RabbitMqs		:		newRabbitmqConfig(),
 	}
 
 	mapConfigFromToml(Conf)
@@ -80,7 +83,7 @@ func initConfig()  {
 /**
 	从toml中加载配置
  */
-func mapConfigFromToml(config *Config)  {
+func mapConfigFromToml(config *config)  {
 	var err error
 
 	// 映射配置

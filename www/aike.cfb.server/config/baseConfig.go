@@ -11,8 +11,8 @@ type baseConfig struct {
 /**
 	初始化配置
  */
-func newBaseConfig() *baseConfig  {
-	return &baseConfig{
+func newBaseConfig() baseConfig  {
+	return baseConfig{
 
 	}
 }

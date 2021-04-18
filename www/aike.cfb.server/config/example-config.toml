@@ -3,10 +3,16 @@ IsDebug=false
 
 [gin]
 Addr="0.0.0.0:8081"
-IsDebug=true
-Mode="release"
+IsDebug=false
+Mode="debug"
 
 [logger]
 # 参考 go-logger
 Target="console"
 
+[rabbitmq.default]
+dsn="amqp://guest:guest@localhost:5672/"
+Qos=10
+Heartbeat=10
+Channel="test_channel"
+queu="test_queue"
