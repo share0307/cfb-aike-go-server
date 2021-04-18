@@ -73,8 +73,8 @@ func initConfig()  {
 	Conf = &config{
 		Base					:		newBaseConfig(),
 		Gin						:		newGinConfig(),
-		Logger				:		newLoggerConfig(),
-		RabbitMqs		:		newRabbitmqConfig(),
+		Logger					:		newLoggerConfig(),
+		RabbitMqs				:		newRabbitmqConfig(),
 	}
 
 	mapConfigFromToml(Conf)
