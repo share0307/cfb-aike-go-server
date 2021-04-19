@@ -1,7 +1,6 @@
 package queue
 
 import (
-	"aike-cfb-server/kernel/component/queue"
 	"context"
 	"fmt"
 	"os"
@@ -14,8 +13,6 @@ import (
 	队列接口
  */
 type ExportQueueInterface interface {
-	// 此接口，也必须要实现这些
-	queue.QueueInterface
 
 	// 启动服务
 	On(ctx context.Context, group *sync.WaitGroup)
@@ -23,17 +20,6 @@ type ExportQueueInterface interface {
 	// 关闭服务时，做一些清理的工作
 	// 说明：此方法更多是侧重作一些资源清理的事情，而On中的context更多是为了关联goroutine上下文
 	Down()
-}
-
-/**
-	队列分组，并且用于初始化队列
- */
-type QueueGroup struct {
-	queueList []ExportQueueInterface
-}
-
-func (qg *QueueGroup)setQueue(queue *ExportQueueInterface) {
-	append(qg.queueList, queue)
 }
 
 /**

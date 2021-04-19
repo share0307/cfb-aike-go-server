@@ -6,14 +6,12 @@ import (
 	"github.com/go-redis/redis"
 )
 
-type HandleReceiveMsgProcess func(string)
-
 /**
 	通用实现
 */
 type CommonQueueImplementation struct {
-	// 队列名称
-	queueName string
+	// 队列配置别名
+	queueConfigAlias string
 	// 是否开启去重标记
 	isDuplicateCheckFlag bool
 	// 重复检测的map
@@ -22,26 +20,14 @@ type CommonQueueImplementation struct {
 	rds *redis.Client
 	// x 秒之内的任务不得重复
 	duplicateLifeCycle int
-
-	HandleReceiveMsgProcess HandleReceiveMsgProcess
 }
 
 /**
-	设置队列名称
+	设置队列
  */
-func (c *CommonQueueImplementation)SetQueueName(name string)  {
-	c.queueName = name
-
-	c.HandleReceiveMsgProcess("aaa")
+func (c *CommonQueueImplementation)SetQueueConfig(alias string)  {
+	c.queueConfigAlias = alias
 }
-
-/**
-	获取队列名称
- */
-func (c *CommonQueueImplementation)GetQueueName() string {
-	return c.queueName
-}
-
 
 /**
 是否开启去重判断

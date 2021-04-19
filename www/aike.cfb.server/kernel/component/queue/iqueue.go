@@ -1,18 +1,20 @@
 package queue
 
 import (
+	"context"
 	"github.com/go-redis/redis"
+	"sync"
 )
 
 /**
 	定义使用队列时，必须要实现的方法
  */
-type QueueInfoInterface interface {
+type IQueue interface {
 	// 队列相关消息
 	// 做一些初始化工作
-	Init()
-	// 设置交换机
-	SetQueueExchange(queueExchange QueueExchange)
+	Init(ctx context.Context, group *sync.WaitGroup)
+	// 设置队列的别名
+	SetQueueConfig(alias string)
 
 	// 业务流程处理
 	// 处理消息的流程，从队列中获取消息，会推送到此方法中
@@ -49,21 +51,5 @@ type QueueInfoInterface interface {
 	//SetLogger(logger *go_logger.Logger)
 	////获取日志组件，用于内部写日志
 	//GetLogger() *go_logger.Logger
-}
-
-/**
-	定义交换机类型，
- */
-type QueueExchange struct {
-	// 交换机类型
-	ExchangeType string
-	// 交换机名称
-	ExchangeName string
-	// 队列名称
-	QueueName string
-	// 路由key名称
-	RouteKeyName string
-	// 链接地址
-	Dns string
 }
 

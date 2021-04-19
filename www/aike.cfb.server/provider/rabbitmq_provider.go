@@ -57,5 +57,5 @@ func (r *rabbitmqProvider)Connect()  {
 	}
 
 	// 链接设置
-	r.channel.Qos()
+	r.channel.Qos(30, 0, false)
 }

@@ -1,7 +1,7 @@
 package aike
 
 import (
-	"aike-cfb-server/queue/aike/wechat"
+	"aike-cfb-server/queue/aike"
 	"github.com/spf13/cobra"
 )
 
@@ -11,6 +11,6 @@ var WechatQueueCmd = &cobra.Command{
 	Long: `处理微信消息队列`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// 启动服务，启动 web server 服务
-		wechat.Run()
+		aike.Run()
 	},
 }

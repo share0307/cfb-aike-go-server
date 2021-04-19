@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"sync"
-	"time"
 )
 
 /**
@@ -19,13 +18,8 @@ type HandleWechatMessage struct {
 /**
 	启动服务
  */
-func (h *HandleWechatMessage)On(ctx context.Context, group *sync.WaitGroup)  {
+func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup)  {
 	provider.LoggerProvider.Info("正在启用 HandleWechatMessage 的队列服务！")
-
-	// 初始化服务
-	provider.LoggerProvider.Debugf("准备初始化服务：", time.Now().String())
-	h.Init()
-	provider.LoggerProvider.Debugf("完成初始化服务：", time.Now().String())
 
 	// 进行监听 context
 	select {
@@ -42,16 +36,6 @@ func (h *HandleWechatMessage)On(ctx context.Context, group *sync.WaitGroup)  {
 
 func (h *HandleWechatMessage)Down() {
 	fmt.Println("HandleWechatMessage 关闭了！！")
-}
-
-// 队列相关消息
-// 做一些初始化工作
-func (h *HandleWechatMessage)Init() {
-	// 初始化一些配置
-
-	// 初始化一些通用组件
-
-	// 初始化rabbitmq链接
 }
 
 // 处理消息的流程，从队列中获取消息，会推送到此方法中
