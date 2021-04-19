@@ -6,6 +6,8 @@ import (
 	"github.com/go-redis/redis"
 )
 
+type HandleReceiveMsgProcess func(string)
+
 /**
 	通用实现
 */
@@ -21,7 +23,7 @@ type CommonQueueImplementation struct {
 	// x 秒之内的任务不得重复
 	duplicateLifeCycle int
 
-	HandleReceiveMsgProcess func()
+	HandleReceiveMsgProcess HandleReceiveMsgProcess
 }
 
 /**
@@ -29,6 +31,8 @@ type CommonQueueImplementation struct {
  */
 func (c *CommonQueueImplementation)SetQueueName(name string)  {
 	c.queueName = name
+
+	c.HandleReceiveMsgProcess("aaa")
 }
 
 /**

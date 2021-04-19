@@ -7,7 +7,7 @@ import (
 /**
 	定义使用队列时，必须要实现的方法
  */
-type QueueInterface interface {
+type QueueInfoInterface interface {
 	// 队列相关消息
 	// 做一些初始化工作
 	Init()
