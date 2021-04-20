@@ -10,36 +10,24 @@ import (
 )
 
 /**
-	队列接口
+	运行队列
  */
-type ExportQueueInterface interface {
-
-	// 启动服务
-	On(ctx context.Context, group *sync.WaitGroup)
-
-	// 关闭服务时，做一些清理的工作
-	// 说明：此方法更多是侧重作一些资源清理的事情，而On中的context更多是为了关联goroutine上下文
-	Down()
+type ExecMqService interface {
+	Run(ctx context.Context, group *sync.WaitGroup)
 }
 
 /**
 	导出业务
  */
-func Consume(queues []ExportQueueInterface)  {
-	// 生成context
-	ctx, cancel := context.WithCancel(context.Background())
-	// 取消，必须注意：肯定会调用此 defer，但是协程是否来得及处理，这个必须得靠手工保证！！
-	//defer cancel()
-
+func Exec(mqService ExecMqService)  {
 	// 任务分组
 	waitGroup := &sync.WaitGroup{}
 
-	// 启动goroutine
-	for _,queue := range queues {
-		waitGroup.Add(1)
-		// 启动协程
-		go queue.On(ctx, waitGroup)
-	}
+	// 上下文
+	ctx,cancel := context.WithCancel(context.Background())
+
+	// 运行mq
+	mqService.Run(ctx, waitGroup)
 
 	// 常驻进程
 	//select {}
@@ -59,6 +47,7 @@ func Consume(queues []ExportQueueInterface)  {
 	// 通知协程退出！！
 	cancel()
 
+	// 的呢古代分组任务完结
 	waitGroup.Wait()
 
 	fmt.Println("所有协程已退出，关闭进程！！")

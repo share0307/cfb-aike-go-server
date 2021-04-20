@@ -2,8 +2,10 @@ package queue
 
 import (
 	"aike-cfb-server/kernel/helper"
+	"aike-cfb-server/provider"
 	"fmt"
 	"github.com/go-redis/redis"
+	"github.com/streadway/amqp"
 )
 
 /**
@@ -20,6 +22,9 @@ type CommonQueueImplementation struct {
 	rds *redis.Client
 	// x 秒之内的任务不得重复
 	duplicateLifeCycle int
+
+	// mq的服务提供者
+	mqProvider *provider.RabbitmqProvider
 }
 
 /**
@@ -30,7 +35,23 @@ func (c *CommonQueueImplementation)SetQueueConfig(alias string)  {
 }
 
 /**
-是否开启去重判断
+	链接队列
+ */
+func (c *CommonQueueImplementation)ConnectMq()  {
+	// 获取实例
+	mqProvider := provider.NewRabbitmqProvider(c.queueConfigAlias)
+
+	// 链接
+	mqProvider.Connect()
+
+	// 绑定交换机与队列的关系
+	mqProvider.InitExchangeAndQueue()
+
+	c.mqProvider = mqProvider
+}
+
+/**
+	是否开启去重判断
 */
 func (c *CommonQueueImplementation)SetEnableDuplicateCheckFlag(flag bool) {
 	c.isDuplicateCheckFlag = flag
@@ -120,3 +141,22 @@ func (c *CommonQueueImplementation)GetRds() *redis.Client {
 }
 
 // 定义一些通用依赖组建。。。
+
+func (c *CommonQueueImplementation)PublishSimpleMsg(body []byte) {
+	publishing := amqp.Publishing{}
+
+	publishing.Body = body
+	publishing.ContentType = "text/plain"
+
+	c.PublishMsg(publishing)
+}
+
+// mq操作的一些方法
+/**
+	生产数据
+ */
+func (c *CommonQueueImplementation)PublishMsg(publishing amqp.Publishing) {
+	err := c.mqProvider.Publish(publishing)
+
+	fmt.Println(err)
+}

@@ -12,6 +12,10 @@ type RabbitmqConfig struct {
 	Heartbeat int
 	// 渠道
 	Channel string
+	// 虚拟机
+	Vhost string
+	// 交换机
+	Exchange string
 	// 交换机类型
 	ExchangeType string
 	// 队列

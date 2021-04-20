@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 )
 
 /**
@@ -20,6 +21,13 @@ type HandleWechatMessage struct {
  */
 func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup)  {
 	provider.LoggerProvider.Info("正在启用 HandleWechatMessage 的队列服务！")
+
+	// 设置别名
+	h.SetQueueConfig("default")
+
+	h.ConnectMq()
+
+	h.HandlePublishMsgProcess()
 
 	// 进行监听 context
 	select {
@@ -45,7 +53,21 @@ func (h *HandleWechatMessage)HandleReceiveMsgProcess() {
 
 // 发送消息的流程，会从此方法中取得数据，然后推送队列中
 func (h *HandleWechatMessage)HandlePublishMsgProcess() {
+	// 数据处理
 
+	t := time.NewTicker(1 * time.Second)
+	// 数据发送
+	for  {
+		select {
+			case <- t.C:
+				fmt.Println("aaaaaa")
+				h.PublishSimpleMsg([]byte("hello world：" + time.Now().String()))
+		}
+
+	}
+	// 成功。。
+
+	// 失败。。
 }
 
 // 处理链接异常的流程
