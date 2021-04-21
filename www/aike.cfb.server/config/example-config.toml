@@ -17,6 +17,6 @@ Heartbeat=10
 Vhost="/test"
 Channel="test_channel"
 Exchange="test_exchange"
-ExchangeType="test_queue"
+ExchangeType="fanout"
 Queue="test_queue"
 Route="test_route"
