@@ -20,8 +20,8 @@ type ginConfig struct {
 func newGinConfig() ginConfig {
 	return ginConfig{
 		// 作为默认配置
-		Addr						:		"0.0.0.0:8081",
+		Addr				:		"0.0.0.0:8081",
 		IsDebug				:		false,
-		Mode						:		gin.ReleaseMode,
+		Mode				:		gin.ReleaseMode,
 	}
 }
