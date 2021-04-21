@@ -131,7 +131,7 @@ func (r *RabbitmqProvider)Publish(msg amqp.Publishing) error {
 /**
 	消费数据
  */
-func (r *RabbitmqProvider)Consume(msg amqp.Publishing) (<- chan amqp.Delivery, error) {
+func (r *RabbitmqProvider)Consume() (<- chan amqp.Delivery, error) {
 	deliveryChan,err := r.channel.Consume(
 		r.config.Queue,
 		"",

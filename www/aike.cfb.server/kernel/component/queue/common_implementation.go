@@ -51,6 +51,26 @@ func (c *CommonQueueImplementation)ConnectMq()  {
 }
 
 /**
+	消费
+ */
+func (c *CommonQueueImplementation)Consume()  {
+	consumeChan, err := c.mqProvider.Consume()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for {
+		select {
+			case msg := <-consumeChan:
+				fmt.Println(string(msg.Body))
+				msg.Ack(false)
+		}
+	}
+
+}
+
+/**
 	是否开启去重判断
 */
 func (c *CommonQueueImplementation)SetEnableDuplicateCheckFlag(flag bool) {

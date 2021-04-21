@@ -25,9 +25,13 @@ func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup)  {
 	// 设置别名
 	h.SetQueueConfig("default")
 
+	// 链接队列，初始化一些东西
 	h.ConnectMq()
 
-	h.HandlePublishMsgProcess()
+	go h.HandlePublishMsgProcess()
+
+	// 消费数据
+	h.Consume()
 
 	// 进行监听 context
 	select {
