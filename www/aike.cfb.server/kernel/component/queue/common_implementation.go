@@ -3,9 +3,11 @@ package queue
 import (
 	"aike-cfb-server/kernel/helper"
 	"aike-cfb-server/provider"
+	"context"
 	"fmt"
 	"github.com/go-redis/redis"
 	"github.com/streadway/amqp"
+	"sync"
 )
 
 /**
@@ -25,6 +27,45 @@ type CommonQueueImplementation struct {
 
 	// mq的服务提供者
 	mqProvider *provider.RabbitmqProvider
+
+	// 当进程退出时，需要做的一些析构方法
+	downFunc func()
+}
+
+/**
+	监控队列
+ */
+func (c *CommonQueueImplementation)Monitor(ctx context.Context, group *sync.WaitGroup) {
+	// 添加分组任务
+	group.Add(1)
+
+	// 正式监听
+	go func() {
+		// 进行监听 context
+		select {
+		case <- ctx.Done():
+			{
+				// 关闭通用的方法
+			}
+
+			fmt.Println("退出了！！")
+
+			// 执行关闭方法
+			if c.downFunc != nil {
+				c.downFunc()
+			}
+
+			// 完成分组任务
+			group.Done()
+		}
+	}()
+}
+
+/**
+	设置关闭时执行的方法
+ */
+func (c *CommonQueueImplementation)SetDownFunc(downFunc func()) {
+	c.downFunc = downFunc
 }
 
 /**
@@ -37,7 +78,7 @@ func (c *CommonQueueImplementation)SetQueueConfig(alias string)  {
 /**
 	链接队列
  */
-func (c *CommonQueueImplementation)ConnectMq()  {
+func (c *CommonQueueImplementation)InitMq()  {
 	// 获取实例
 	mqProvider := provider.NewRabbitmqProvider(c.queueConfigAlias)
 
@@ -53,20 +94,24 @@ func (c *CommonQueueImplementation)ConnectMq()  {
 /**
 	消费
  */
-func (c *CommonQueueImplementation)Consume()  {
+func (c *CommonQueueImplementation)Consume() (<- chan amqp.Delivery, error) {
 	consumeChan, err := c.mqProvider.Consume()
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for {
-		select {
-			case msg := <-consumeChan:
-				fmt.Println(string(msg.Body))
-				msg.Ack(false)
-		}
-	}
+	//go func() {
+	//	for {
+	//		select {
+	//		case msg := <-consumeChan:
+	//			fmt.Println(string(msg.Body))
+	//			msg.Ack(false)
+	//		}
+	//	}
+	//}()
+
+	return consumeChan, err
 
 }
 

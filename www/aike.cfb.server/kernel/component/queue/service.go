@@ -39,7 +39,17 @@ func (mq *mqService)Run(ctx context.Context, group *sync.WaitGroup) {
 			mq.queueList[idx].Init(ctx, group)
 
 			// 进消息监听，并且把消息推送给固定方法
-			//mq.queueList[i].
+			consumeChan, err := mq.queueList[idx].Consume()
+
+			if err != nil {
+				panic(err)
+			}
+
+			go func() {
+				for delivery := range consumeChan {
+					mq.queueList[idx].HandleReceiveMsgProcess(&delivery)
+				}
+			}()
 		}(i)
 	}
 

@@ -5,6 +5,7 @@ import (
 	"aike-cfb-server/provider"
 	"context"
 	"fmt"
+	"github.com/streadway/amqp"
 	"sync"
 	"time"
 )
@@ -16,30 +17,22 @@ type HandleWechatMessage struct {
 	queue.CommonQueueImplementation
 }
 
-/**
+/**s
 	启动服务
  */
-func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup)  {
+func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup) {
 	provider.LoggerProvider.Info("正在启用 HandleWechatMessage 的队列服务！")
+
+	// 启动监控
+	h.Monitor(ctx, group)
 
 	// 设置别名
 	h.SetQueueConfig("default")
 
-	// 链接队列，初始化一些东西
-	h.ConnectMq()
+	// 初始化队列
+	h.InitMq()
 
 	go h.HandlePublishMsgProcess()
-
-	// 消费数据
-	h.Consume()
-
-	// 进行监听 context
-	select {
-		case <- ctx.Done():
-			h.Down()
-			// 完成分组任务
-			group.Done()
-	}
 }
 
 /**
@@ -51,8 +44,11 @@ func (h *HandleWechatMessage)Down() {
 }
 
 // 处理消息的流程，从队列中获取消息，会推送到此方法中
-func (h *HandleWechatMessage)HandleReceiveMsgProcess() {
+func (h *HandleWechatMessage)HandleReceiveMsgProcess(delivery *amqp.Delivery) {
+	fmt.Println("aaaaaa")
+	fmt.Println(delivery.Body)
 
+	delivery.Ack(false)
 }
 
 // 发送消息的流程，会从此方法中取得数据，然后推送队列中

@@ -26,7 +26,7 @@ func Exec(mqService ExecMqService)  {
 	// 上下文
 	ctx,cancel := context.WithCancel(context.Background())
 
-	// 运行mq
+	// 运行mq服务
 	mqService.Run(ctx, waitGroup)
 
 	// 常驻进程

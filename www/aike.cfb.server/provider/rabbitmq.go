@@ -10,7 +10,7 @@ import (
 /**
 	实例化rabbitmq的服务提供者
  */
-func NewRabbitmqProvider(alias string)  *RabbitmqProvider {
+func NewRabbitmqProvider(alias string) *RabbitmqProvider {
 	// 获取配置
 	mqConfig,exists := config.Conf.RabbitMqs[alias]
 

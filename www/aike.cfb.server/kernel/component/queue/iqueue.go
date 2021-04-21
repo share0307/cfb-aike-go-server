@@ -3,6 +3,7 @@ package queue
 import (
 	"context"
 	"github.com/go-redis/redis"
+	"github.com/streadway/amqp"
 	"sync"
 )
 
@@ -15,10 +16,14 @@ type IQueue interface {
 	Init(ctx context.Context, group *sync.WaitGroup)
 	// 设置队列的别名
 	SetQueueConfig(alias string)
+	// 初始化Mq
+	InitMq()
+	// 消费
+	Consume() (<- chan amqp.Delivery, error)
 
 	// 业务流程处理
 	// 处理消息的流程，从队列中获取消息，会推送到此方法中
-	HandleReceiveMsgProcess()
+	HandleReceiveMsgProcess(delivery *amqp.Delivery)
 	// 发送消息的流程，会从此方法中取得数据，然后推送队列中
 	HandlePublishMsgProcess()
 	// 出现异常时的流程
