@@ -84,8 +84,9 @@ func (r *RabbitmqProvider)Connect()  {
 	初始化交换机与队列
  */
 func (r *RabbitmqProvider)InitExchangeAndQueue() {
+	var err error
 	// 声明交换机
-	r.channel.ExchangeDeclare(
+	err = r.channel.ExchangeDeclare(
 		r.config.Exchange,
 		r.config.ExchangeType,
 		true,
@@ -93,26 +94,36 @@ func (r *RabbitmqProvider)InitExchangeAndQueue() {
 		false,
 		false,
 		nil,
-		)
+	)
+	if err != nil {
+		panic("创建交换机失败！" + err.Error())
+	}
 
 	// 声明队列
-	r.channel.QueueDeclare(
+	_, err = r.channel.QueueDeclare(
 		r.config.Queue,
 		true,
 		false,
 		false,
 		false,
 		nil,
-		)
+	)
+
+	if err != nil {
+		panic("创建队列失败！" + err.Error())
+	}
 
 	// 帮顶队列与交换机的关系
-	r.channel.QueueBind(
+	err = r.channel.QueueBind(
 		r.config.Queue,
 		r.config.Route,
 		r.config.Exchange,
 		true,
 		nil,
-		)
+	)
+	if err != nil {
+		panic("帮顶交换机与队列失败！" + err.Error())
+	}
 }
 
 /**

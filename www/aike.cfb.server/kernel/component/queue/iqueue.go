@@ -13,7 +13,10 @@ import (
 type IQueue interface {
 	// 队列相关消息
 	// 做一些初始化工作
-	Init(ctx context.Context, group *sync.WaitGroup)
+	// 初始化消费者
+	InitConsumer(ctx context.Context, group *sync.WaitGroup)
+	// 初始化消费者
+	InitProducer(ctx context.Context, group *sync.WaitGroup)
 	// 设置队列的别名
 	SetQueueConfig(alias string)
 	// 初始化Mq

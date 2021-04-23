@@ -36,7 +36,7 @@ func (mq *mqService)Run(ctx context.Context, group *sync.WaitGroup) {
 	for i := 0;i < len(mq.queueList); i++ {
 		go func(idx int) {
 			// 调用队列本身的Init方法，初始化服务等组件
-			mq.queueList[idx].Init(ctx, group)
+			mq.queueList[idx].InitConsumer(ctx, group)
 
 			// 进消息监听，并且把消息推送给固定方法
 			consumeChan, err := mq.queueList[idx].Consume()

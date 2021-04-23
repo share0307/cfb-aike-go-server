@@ -19,25 +19,47 @@ type HandleWechatMessage struct {
 }
 
 /**s
-	启动服务
+	通用
  */
-func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup) {
+func (h *HandleWechatMessage)initCommon(ctx context.Context, group *sync.WaitGroup) {
 	provider.LoggerProvider.Info("正在启用 HandleWechatMessage 的队列服务！")
 
 	// 启动监控
 	h.Monitor(ctx, group)
-
-	// 设置关闭后调用的函数
-	h.SetDownFunc(func() {
-		h.Down()
-	})
 
 	// 设置别名
 	h.SetQueueConfig("default")
 
 	// 初始化队列
 	h.InitMq()
+}
 
+/**
+	初始化消费者
+ */
+func (h *HandleWechatMessage)InitConsumer(ctx context.Context, group *sync.WaitGroup) {
+	// 设置关闭后调用的函数
+	h.SetDownFunc(func() {
+		h.Down()
+	})
+
+	// 调用通用初始化
+	h.initCommon(ctx, group)
+}
+
+/**
+	初始化生产者
+ */
+func (h *HandleWechatMessage)InitProducer(ctx context.Context, group *sync.WaitGroup) {
+	// 设置关闭后调用的函数
+	h.SetDownFunc(func() {
+		h.Down()
+	})
+
+	// 调用通用初始化
+	h.initCommon(ctx, group)
+
+	// 开启消息
 	go h.PublishMsg()
 }
 
