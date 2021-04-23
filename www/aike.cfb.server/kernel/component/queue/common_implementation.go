@@ -101,18 +101,7 @@ func (c *CommonQueueImplementation)Consume() (<- chan amqp.Delivery, error) {
 		fmt.Println(err)
 	}
 
-	//go func() {
-	//	for {
-	//		select {
-	//		case msg := <-consumeChan:
-	//			fmt.Println(string(msg.Body))
-	//			msg.Ack(false)
-	//		}
-	//	}
-	//}()
-
 	return consumeChan, err
-
 }
 
 /**

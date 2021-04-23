@@ -38,13 +38,12 @@ func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup) {
 	// 初始化队列
 	h.InitMq()
 
-	go h.HandlePublishMsgProcess()
+	go h.PublishMsg()
 }
 
 /**
 	关闭服务
  */
-
 func (h *HandleWechatMessage)Down() {
 	fmt.Println("HandleWechatMessage 关闭了！！")
 }
@@ -57,7 +56,7 @@ func (h *HandleWechatMessage)HandleReceiveMsgProcess(delivery *amqp.Delivery) {
 }
 
 // 发送消息的流程，会从此方法中取得数据，然后推送队列中
-func (h *HandleWechatMessage)HandlePublishMsgProcess() {
+func (h *HandleWechatMessage)PublishMsg() {
 	// 数据处理
 
 	t := time.NewTicker(1 * time.Second)
@@ -73,11 +72,6 @@ func (h *HandleWechatMessage)HandlePublishMsgProcess() {
 	// 成功。。
 
 	// 失败。。
-}
-
-// 处理链接异常的流程
-func (h *HandleWechatMessage)HandleConnectionErrProcess() {
-
 }
 
 /**

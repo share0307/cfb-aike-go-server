@@ -25,11 +25,9 @@ type IQueue interface {
 	// 处理消息的流程，从队列中获取消息，会推送到此方法中
 	HandleReceiveMsgProcess(delivery *amqp.Delivery)
 	// 发送消息的流程，会从此方法中取得数据，然后推送队列中
-	HandlePublishMsgProcess()
+	PublishMsg()
 	// 出现异常时的流程
 	HandleMsgErrProcess()
-	// 处理链接异常的流程
-	HandleConnectionErrProcess()
 
 	// 消息去重规则
 	// 设置是否开启去重
