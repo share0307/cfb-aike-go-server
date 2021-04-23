@@ -2,6 +2,7 @@ package message
 
 import (
 	"aike-cfb-server/kernel/component/queue"
+	"aike-cfb-server/module/aike/business"
 	"aike-cfb-server/provider"
 	"context"
 	"fmt"
@@ -60,7 +61,7 @@ func (h *HandleWechatMessage)InitProducer(ctx context.Context, group *sync.WaitG
 	h.initCommon(ctx, group)
 
 	// 开启消息
-	go h.PublishMsg()
+	go h.HandlePublishMsgProcess()
 }
 
 /**
@@ -72,13 +73,14 @@ func (h *HandleWechatMessage)Down() {
 
 // 处理消息的流程，从队列中获取消息，会推送到此方法中
 func (h *HandleWechatMessage)HandleReceiveMsgProcess(delivery *amqp.Delivery) {
-	fmt.Println(delivery.Body)
+	// 调用 business 进行业务处理
+	business.WechatMessageBusiness.HandleWechatMessage(string(delivery.Body))
 
 	delivery.Ack(false)
 }
 
 // 发送消息的流程，会从此方法中取得数据，然后推送队列中
-func (h *HandleWechatMessage)PublishMsg() {
+func (h *HandleWechatMessage)HandlePublishMsgProcess() {
 	// 数据处理
 
 	t := time.NewTicker(1 * time.Second)
@@ -86,7 +88,6 @@ func (h *HandleWechatMessage)PublishMsg() {
 	for  {
 		select {
 			case <- t.C:
-				fmt.Println("aaaaaa")
 				h.PublishSimpleMsg([]byte("hello world：" + time.Now().String()))
 		}
 

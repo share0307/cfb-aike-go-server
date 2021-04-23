@@ -140,8 +140,6 @@ func (c *CommonQueueImplementation)GetDuplicateMap() map[string]string {
 func (c *CommonQueueImplementation)GetDuplicateSign() string {
 	DuplicateMap := c.GetDuplicateMap()
 
-	fmt.Println(DuplicateMap)
-
 	if len(DuplicateMap) == 0 {
 		panic("请先设置完成 duplicateMap 的设置！！")
 	}
@@ -212,5 +210,23 @@ func (c *CommonQueueImplementation)PublishSimpleMsg(body []byte) {
 func (c *CommonQueueImplementation)PublishMsg(publishing amqp.Publishing) {
 	err := c.mqProvider.Publish(publishing)
 
-	fmt.Println(err)
+	if err != nil {
+		panic("发送消息失败！" + err.Error())
+	}
 }
+
+/**
+	处理发送消息流程
+ */
+func (c *CommonQueueImplementation)HandlePublishMsgProcess() {
+	// 从消息中，提取相关信息
+
+	// 生成sign
+
+	// 判断是否在redis中
+
+	// 若在，则直接返回
+
+	// 否，则继续发送消息
+
+	}

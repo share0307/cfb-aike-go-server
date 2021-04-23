@@ -30,7 +30,6 @@ func NewRabbitmqProvider(alias string) *RabbitmqProvider {
 		for  {
 			select {
 				case <- t.C:
-					fmt.Println("监听中")
 					if mqProvider.IsClose() == true {
 						fmt.Println("已断开！")
 					}
