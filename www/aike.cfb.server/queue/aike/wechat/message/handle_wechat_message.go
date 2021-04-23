@@ -14,6 +14,7 @@ import (
 	处理微信消息
  */
 type HandleWechatMessage struct {
+	// 嵌入通用结构体
 	queue.CommonQueueImplementation
 }
 
@@ -25,6 +26,11 @@ func (h *HandleWechatMessage)Init(ctx context.Context, group *sync.WaitGroup) {
 
 	// 启动监控
 	h.Monitor(ctx, group)
+
+	// 设置关闭后调用的函数
+	h.SetDownFunc(func() {
+		h.Down()
+	})
 
 	// 设置别名
 	h.SetQueueConfig("default")
@@ -45,7 +51,6 @@ func (h *HandleWechatMessage)Down() {
 
 // 处理消息的流程，从队列中获取消息，会推送到此方法中
 func (h *HandleWechatMessage)HandleReceiveMsgProcess(delivery *amqp.Delivery) {
-	fmt.Println("aaaaaa")
 	fmt.Println(delivery.Body)
 
 	delivery.Ack(false)
