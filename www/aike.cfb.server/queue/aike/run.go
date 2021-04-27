@@ -13,7 +13,7 @@ func Run()  {
 	// 实例化mq服务容器
 	mqService := queue.NewMqService()
 
-	// 添加接受艾克的微信消息队列
+	// 添加接受的微信消息队列
 	mqService.Add(new(message.HandleWechatMessage))
 
 	// 通用运行
