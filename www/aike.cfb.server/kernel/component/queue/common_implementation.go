@@ -46,14 +46,15 @@ func (c *CommonQueueImplementation)Monitor(ctx context.Context, group *sync.Wait
 		case <- ctx.Done():
 			{
 				// 关闭通用的方法
+				c.CloseMq()
 			}
-
-			fmt.Println("退出了！！")
 
 			// 执行关闭方法
 			if c.downFunc != nil {
 				c.downFunc()
 			}
+
+			fmt.Println("退出了！！")
 
 			// 完成分组任务
 			group.Done()
@@ -89,6 +90,13 @@ func (c *CommonQueueImplementation)InitMq()  {
 	mqProvider.InitExchangeAndQueue()
 
 	c.mqProvider = mqProvider
+}
+
+/**
+	关闭队列
+ */
+func (c *CommonQueueImplementation)CloseMq()  {
+	c.mqProvider.DisConnect()
 }
 
 /**

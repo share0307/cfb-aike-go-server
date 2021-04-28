@@ -80,6 +80,19 @@ func (r *RabbitmqProvider)Connect()  {
 }
 
 /**
+	关闭channel，关闭链接
+ */
+func (r *RabbitmqProvider)DisConnect() {
+	if r.channel != nil {
+		r.channel.Close()
+	}
+
+	if r.connect != nil {
+		r.connect.Close()
+	}
+}
+
+/**
 	初始化交换机与队列
  */
 func (r *RabbitmqProvider)InitExchangeAndQueue() {
