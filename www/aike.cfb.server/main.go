@@ -24,8 +24,6 @@ func main() {
 	初始化应用
 */
 func initApp() {
-	// 初始化时区
-
 	// 初始化
 }
 
