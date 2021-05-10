@@ -20,3 +20,6 @@ Exchange="test_exchange"
 ExchangeType="fanout"
 Queue="test_queue"
 Route="test_route"
+
+[gorm.default]
+dsn="user:password@/dbname?charset=utf8&parseTime=True&loc=Local"

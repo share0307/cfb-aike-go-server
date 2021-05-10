@@ -4,7 +4,8 @@ package config
 	gorm配置
  */
 type GormConfig struct {
-
+	// 链接信息
+	Dsn string
 }
 
 /**

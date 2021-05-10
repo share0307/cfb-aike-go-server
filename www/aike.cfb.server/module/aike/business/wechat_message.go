@@ -13,7 +13,7 @@ var WechatMessageBusiness *wechatMessageBusiness = new(wechatMessageBusiness)
  */
 type wechatMessageBusiness struct {
 	// 继承
-	_ base.BaseBusiness
+	base.BaseBusiness
 }
 
 /**
@@ -21,4 +21,6 @@ type wechatMessageBusiness struct {
  */
 func (w *wechatMessageBusiness)HandleWechatMessage(content string)  {
 	fmt.Println("接收到消息：", content)
+
+	w.Say("content->" + content)
 }

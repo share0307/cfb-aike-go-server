@@ -10,7 +10,7 @@ import (
 /**
 	实例化rabbitmq的服务提供者
  */
-func NewRabbitmqProvider(alias string) *RabbitmqProvider {
+func NewRabbitMqProvider(alias string) *RabbitMqProvider {
 	// 获取配置
 	mqConfig,exists := config.Conf.RabbitMqs[alias]
 
@@ -19,11 +19,11 @@ func NewRabbitmqProvider(alias string) *RabbitmqProvider {
 	}
 
 	// 返回mq实例
-	mqProvider := &RabbitmqProvider{
+	mqProvider := &RabbitMqProvider{
 		config	: mqConfig,
 	}
 
-	// 启动监听
+	// 启动监听，需要封装一下的
 	go func() {
 		t := time.NewTicker(1 * time.Second)
 
@@ -35,7 +35,6 @@ func NewRabbitmqProvider(alias string) *RabbitmqProvider {
 					}
 			}
 		}
-
 	}()
 
 	return mqProvider
@@ -44,7 +43,7 @@ func NewRabbitmqProvider(alias string) *RabbitmqProvider {
 /**
 	rabbitmq的服务提供者
  */
-type RabbitmqProvider struct {
+type RabbitMqProvider struct {
 	// 保存使用的配置别名
 	config config.RabbitmqConfig
 	// 保存rabbitmq的链接
@@ -56,7 +55,7 @@ type RabbitmqProvider struct {
 /**
 	链接
  */
-func (r *RabbitmqProvider)Connect()  {
+func (r *RabbitMqProvider)Connect()  {
 	var err error
 	var amqpConfig = amqp.Config{
 		Heartbeat	:		time.Duration(r.config.Heartbeat) * time.Second,
@@ -82,7 +81,7 @@ func (r *RabbitmqProvider)Connect()  {
 /**
 	关闭channel，关闭链接
  */
-func (r *RabbitmqProvider)DisConnect() {
+func (r *RabbitMqProvider)DisConnect() {
 	if r.channel != nil {
 		r.channel.Close()
 	}
@@ -95,7 +94,7 @@ func (r *RabbitmqProvider)DisConnect() {
 /**
 	初始化交换机与队列
  */
-func (r *RabbitmqProvider)InitExchangeAndQueue() {
+func (r *RabbitMqProvider)InitExchangeAndQueue() {
 	var err error
 	// 声明交换机
 	err = r.channel.ExchangeDeclare(
@@ -141,7 +140,7 @@ func (r *RabbitmqProvider)InitExchangeAndQueue() {
 /**
 	发布消息
  */
-func (r *RabbitmqProvider)Publish(msg amqp.Publishing) error {
+func (r *RabbitMqProvider)Publish(msg amqp.Publishing) error {
 	// mandatory：当 mandatory 参数为 true 时，交换机无法根据自身和路由键找到一个符合条件的队列，那么 rabbitmq 会调用 Basic.Return 命令，将消息返回给生产者，
 	//                           当 mandatory 参数为 false 时，出现上述情形，则消息直接被丢弃
 	// immediate：当immediate参数设为true时，如果交换器在将消息路由到队列时发现队列上并不存在任何消费者，那么这条消息将不会存入队列中。当与路由键匹配的所有队列都没有消费者时，该消息会通过Basic.Return返回至生产者。
@@ -154,7 +153,7 @@ func (r *RabbitmqProvider)Publish(msg amqp.Publishing) error {
 /**
 	消费数据
  */
-func (r *RabbitmqProvider)Consume() (<- chan amqp.Delivery, error) {
+func (r *RabbitMqProvider)Consume() (<- chan amqp.Delivery, error) {
 	deliveryChan,err := r.channel.Consume(
 		r.config.Queue,
 		"",
@@ -175,6 +174,7 @@ func (r *RabbitmqProvider)Consume() (<- chan amqp.Delivery, error) {
 /**
 	检测是否lianjiezhong
  */
-func (r *RabbitmqProvider)IsClose() bool {
+func (r *RabbitMqProvider)IsClose() bool {
 	return r.connect.IsClosed()
 }
+

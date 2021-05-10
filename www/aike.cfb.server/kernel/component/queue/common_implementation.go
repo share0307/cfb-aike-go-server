@@ -26,7 +26,7 @@ type CommonQueueImplementation struct {
 	duplicateLifeCycle int
 
 	// mq的服务提供者
-	mqProvider *provider.RabbitmqProvider
+	mqProvider *provider.RabbitMqProvider
 
 	// 当进程退出时，需要做的一些析构方法
 	downFunc func()
@@ -81,7 +81,7 @@ func (c *CommonQueueImplementation)SetQueueConfig(alias string)  {
  */
 func (c *CommonQueueImplementation)InitMq()  {
 	// 获取实例
-	mqProvider := provider.NewRabbitmqProvider(c.queueConfigAlias)
+	mqProvider := provider.NewRabbitMqProvider(c.queueConfigAlias)
 
 	// 链接
 	mqProvider.Connect()

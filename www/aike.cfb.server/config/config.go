@@ -17,7 +17,8 @@ type config struct {
 	// gin框架相关配置
 	Gin			ginConfig	`mapstructure:"gin"`
 	// 多个rabbitmq配置
-	RabbitMqs map[string]RabbitmqConfig `mapstructure:"rabbitmq"`
+	RabbitMqs 			map[string]RabbitmqConfig `mapstructure:"rabbitmq"`
+	Gorms					map[string]GormConfig `mapstructure:"gorm"`
 
 
 	// ***************** 不需要进行 toml 配置的 *************/
