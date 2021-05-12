@@ -99,4 +99,6 @@ func initCommand()  {
 	RootCmd.AddCommand(aike.WebServerCmd)
 	// 处理微信消息的队列
 	RootCmd.AddCommand(aike.WechatQueueCmd)
+	// 艾克数据迁移
+	RootCmd.AddCommand(aike.MigrateCmd)
 }

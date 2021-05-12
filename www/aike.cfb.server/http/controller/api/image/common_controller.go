@@ -1,11 +1,12 @@
 package image
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
 	"aike-cfb-server/kernel/base"
 	"aike-cfb-server/kernel/helper"
+	"aike-cfb-server/module/aike/dao"
 	"aike-cfb-server/provider"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
@@ -20,6 +21,13 @@ type commonController struct {
 	首页，用于上传
  */
 func (c *commonController)Index(context *gin.Context)  {
+
+	ud := dao.UserDao{}
+
+	ud.Sore()
+
+	ud.Find()
+
 	context.HTML(http.StatusOK, "upload.tmpl", nil)
 }
 
